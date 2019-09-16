@@ -15,19 +15,19 @@ def get_filters():
         (str) month - name of the month to filter by, or "all" to apply no month filter
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
     """
-   
-    # TO DO: get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs     
+
+    # TO DO: get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
     city = input("Write the city name: ").lower()
 
     while city not in ['chicago', 'new york city', 'washington']:
           city = input("Your input is not valid. Type in: chicago, new york city or washington: ").lower()
-    
+
     # TO DO: get user input for month (all, january, february, ... , june)
     month = input("Now write the month: ").lower()
 
     # TO DO: get user input for day of week (all, monday, tuesday, ... sunday)
     day = input("& please write day of the week: ").lower()
-   
+
     print ('-'*40)
     return city, month, day
 
@@ -47,7 +47,7 @@ def load_data(city, month, day):
 
     df['Start Time'] = pd.to_datetime(df['Start Time'])
     df['End Time'] = pd.to_datetime(df['End Time'])
-    df['month'] = df['Start Time'].apply(lambda x: x.month) 
+    df['month'] = df['Start Time'].apply(lambda x: x.month)
     df['day_of_week'] = df['Start Time'].apply(lambda x: x.strftime('%A').lower())
 
     if month != 'all':
@@ -58,7 +58,7 @@ def load_data(city, month, day):
         df = df.loc[df['day_of_week'] == day,:]
     return df
 
- 
+
 
 def time_stats(df):
     """Displays statistics on the most frequent times of travel."""
@@ -77,12 +77,12 @@ def time_stats(df):
     weekindex = df['day_of_week'].mode()[0]
     print('\n * Most popular day of the week: \n' + weekindex)
 
-    
+
     # TO DO: display the most common start hour
     print('\n * Most popular start hour:')
     df['hour'] = df['Start Time'].dt.hour
     print (df.hour.mode()[0])
-  
+
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -91,13 +91,13 @@ def time_stats(df):
 def station_stats(df):
     """Displays statistics on the most popular stations and trip."""
 
-    print('\nCalculating The Most Popular Stations and Trip...\n')
+    print('Calculating The Most Popular Stations and Trip...')
     start_time = time.time()
 
     # TO DO: display most commonly used start station
     start_station = df['Start Station'].mode()[0]
     print(" * Most popular start station: \n" + start_station)
-   
+
     # TO DO: display most commonly used end station
     end_station = df['End Station'].value_counts().reset_index()['index'][0]
     print("\n * Most popular end station:\n" + end_station)
@@ -106,8 +106,8 @@ def station_stats(df):
     popular_station = df[['Start Station', 'End Station']].groupby(['Start Station', 'End Station']).size().nlargest(1)
     print('\n * Most popular combination of start&end station: ')
     print (popular_station)
-    
-    
+
+
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
@@ -115,14 +115,14 @@ def station_stats(df):
 def trip_duration_stats(df):
     """Displays statistics on the total and average trip duration."""
 
-    print('\nCalculating Trip Duration...\n')
+    print('Calculating Trip Duration...\n')
     start_time = time.time()
-    
+
     # TO DO: display total travel time
     trip_sum = df['Trip Duration'].sum()
     print(" * Total travel time: ")
     print(trip_sum)
-    
+
 
     # TO DO: display mean travel time
     trip_avg = df['Trip Duration'].mean()
@@ -149,13 +149,13 @@ def user_stats(df, city):
         print(df['Gender'].value_counts())
 
     # TO DO: Display earliest, most recent, and most common year of birth
-        
+
         print(" \n * The earliest year of birth:")
         print(df['Birth Year'].min())
-        
+
         print("The latest year of birth:")
         print(df['Birth Year'].max())
-        
+
         print("The most common year of birth:")
         print(df['Birth Year'].mode().values[0])
 
